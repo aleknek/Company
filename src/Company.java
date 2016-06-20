@@ -2,7 +2,7 @@
 public class Company {
 
     private String name;
-    private Employee[] employees = new Employee[5];
+    private Employee[] employees;
 
     public String getName() {
         return name;
@@ -22,11 +22,17 @@ public class Company {
 
     public void employ(Employee employee) {
 
-        for (int i = 0; i < employees.length; i++)
-            if (employees[i] == null) {
-                employees[i] = employee;
-                break;
-            }
+        if (employees == null) {
+            this.employees = new Employee[5];
+        }
+
+        if (addEmployee(employee) == true) {
+            return;
+        } else {
+            this.employees = IncreasedArray();
+            addEmployee(employee);
+        }
+
     }
 
     public void dismiss(Employee employee) {
@@ -48,4 +54,27 @@ public class Company {
             }
         }
     }
+
+    private boolean addEmployee(Employee employee) {
+
+        boolean isSuccess = false;
+
+        for (int i = 0; i < employees.length; i++)
+            if (employees[i] == null) {
+                employees[i] = employee;
+                isSuccess = true;
+                break;
+            }
+        return isSuccess;
+    }
+
+    private Employee[] IncreasedArray() {
+
+        Employee[] employeesNew = new Employee[employees.length + 5];
+        for (int i = 0; i < employees.length; i++) {
+            employeesNew[i] = employees[i];
+        }
+        return employeesNew;
+    }
+
 }
